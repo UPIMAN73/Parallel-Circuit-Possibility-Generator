@@ -69,7 +69,6 @@ class RPCG:
                 else:
                     keep = True
             if keep:
-                print(keep)
                 result.append(RA)
         
         return result
@@ -106,7 +105,7 @@ for i in range(0, T_Res):
         R_A2.append(i)
 
 R_A = R_A2
-print(R_A)
+
 
 # Target Current Value for current management
 T_I = 0.5 # Amps
@@ -121,26 +120,33 @@ I_C = 1.25 # Amps
 I_V = 4.1 # Volts 
 
 # Resistance Weight Threashold
-R_T = 0.50
+R_T = 0.55
 
 # Current Weight Threashold
-I_T = 0.4
+I_T = 0.15
 
 # Create RPCG Class
 layer_1 = RPCG(R_A, T_Res, T_I, T_R, I_C, I_V)
 
-print("Generative System Starting")
+
 # Generate a list of possible resistor configurations given the resistance array and permutations
+print("Generative System Starting")
 layer_1.resistor_array = layer_1.generate()
 
-print("Scoring System Pt. 1 Start")
+
 # Select an ammount of configurations that are within design constraints (Resistance)
+print("Scoring System Pt. 1 Start")
 layer_1.top_array = layer_1.weight(layer_1.resistor_array, R_T)
 
-print("Scoring System Pt. 2 Start")
+
 # Select the best possible configurations that are within design constraints (Current + Resistance)
+print("Scoring System Pt. 2 Start")
 top_possible_layer_1 = layer_1.overallWeight(layer_1.top_array, I_T)
+top_possible_layer_1.sort()
+clean(top_possible_layer_1)
+
 
 
 print("Overall System Results: ")
 print(top_possible_layer_1)
+
